@@ -1,1 +1,4 @@
-# Mern Project 1
+for .env file add the following:
+REACT_APP_GOOGLE_CLIENT_ID=
+REACT_APP_SERVER_ENDPOINT=
+REACT_APP_RAZORPAY_KEY_ID=
