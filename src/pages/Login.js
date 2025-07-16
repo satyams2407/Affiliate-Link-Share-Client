@@ -146,7 +146,10 @@ function Login() {
                             <button type="submit" className="btn btn-primary">Submit</button>
                         </div>
                     </form>
-
+                    <div>
+                        <spna><a href="/forgot-password">forgot your password</a></spna>
+                    </div>
+                            
                     <div className="text-center">
                         <div className="my-4 d-flex align-items-center text-muted">
                             <hr className="flex-grow-1" />

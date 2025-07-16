@@ -18,6 +18,8 @@ import ProtectedRoute from "./rbac/ProtectedRoute";
 import UnauthorizedAccess from "./components/UnauthorizedAccess";
 import ManagePayments from "./pages/payments/ManagePayments";
 import AnalyticsDashboard from "./pages/links/AnalyticsDashboard";
+import ForgetPassword from "./pages/ForgetPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   // Tracking user details in App because App is the component which decides
@@ -27,6 +29,20 @@ function App() {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
 
+  const attemptToRefreshToken = async (request, response) => {
+    try{
+      await axios.post(`${serverEndpoint}/auth/refresh-token`,{},{
+        withCredentials:true
+      });
+      dispatch({
+        type:SET_USER,
+        payload: response.data.userDetails
+      })
+    } catch(error){
+      console.log(error);
+    }
+  };
+
   const isUserLoggedIn = async () => {
     try {
       const response = await axios.post(`${serverEndpoint}/auth/is-user-logged-in`, {}, {
@@ -34,10 +50,17 @@ function App() {
       });
       // updateUserDetails(response.data.userDetails);
       dispatch({
-        type: SET_USER,
+        type:  SET_USER,
         payload: response.data.userDetails
       });
     } catch (error) {
+      if(error.response?.status === 401){
+        console.log('Token expired, attempting to refresh');
+        await attemptToRefreshToken();
+      }
+      else{
+        console.log('User not logged in', error);
+      }
       console.log('User not loggedin', error);
     } finally {
       setLoading(false);
@@ -100,6 +123,12 @@ function App() {
       <Route path="/logout" element={userDetails ?
         <Logout /> :
         <Navigate to="/login" />
+      } />
+      <Route path="/forgot-password" element={
+        <ForgetPassword/>
+      } />
+      <Route path="/reset-password" element={
+        <ResetPassword/>
       } />
       <Route path="/error" element={userDetails ?
         <UserLayout>
