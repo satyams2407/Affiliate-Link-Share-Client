@@ -46,9 +46,9 @@ const ForgetPassword = () => {
     }
   return (
     <div>
-        <div>
+        <div className='container text-center m-4'>
             <form onSubmit={handleSubmit}>
-                <div>
+                <div className='m-2'>
                     <label>Email: </label>
                     <input onChange={handleChange} name="email" value={user.email}></input>
                 </div>
